@@ -2,7 +2,7 @@ services:
   tor:
     build: ./tor
     deploy:
-      replicas: 2
+      replicas: "${BridgeNumber}"
     restart: always
     configs:
       - source: torconf
@@ -22,6 +22,8 @@ services:
 #  squid:
 #    build: ./squid
 #    restart: always
+#  bbulder:
+
 configs:
   torconf:
     file: ./cfg/tor
