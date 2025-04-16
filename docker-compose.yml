@@ -1,23 +1,27 @@
 services:
   tor:
     build: ./tor
+    deploy:
+      replicas: 2
+    restart: always
     configs:
       - source: torconf
         target: /etc/tor/torrc
-        uid: "101"
-        gid: "102"
-        mode: 0400
     healthcheck:
-      test: ["curl", "--fail --socks5-hostname localhost:9050 -I -L 'https://torproject.org' || exit 1"]
+      test: ["CMD", "curl --fail --socks5-hostname localhost:9050 -I -L 'https://torproject.org' || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
   privoxy:
     build: ./privoxy
-    depends_on:
-      tor:
-        condition: service_healthy
-        restart: true
+    restart: always
+#    depends_on:
+#      tor:
+#        condition: service_healthy
+#        restart: true
+#  squid:
+#    build: ./squid
+#    restart: always
 configs:
   torconf:
     file: ./cfg/tor
