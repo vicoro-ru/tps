@@ -1,0 +1,23 @@
+services:
+  tor:
+    build: ./tor
+    configs:
+      - source: torconf
+        target: /etc/tor/torrc
+        uid: "101"
+        gid: "102"
+        mode: 0400
+    healthcheck:
+      test: ["curl", "--fail --socks5-hostname localhost:9050 -I -L 'https://torproject.org' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  privoxy:
+    build: ./privoxy
+    depends_on:
+      tor:
+        condition: service_healthy
+        restart: true
+configs:
+  torconf:
+    file: ./cfg/tor

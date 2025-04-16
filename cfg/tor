@@ -1,0 +1,32 @@
+#
+# Connect to tor lan
+#
+UseBridges 1
+ClientTransportPlugin meek_lite,obfs2,obfs3,obfs4,scramblesuit,snowflake,webtunnel exec /usr/local/bin/lyrebird
+ClientTransportPlugin conjure exec ./TorBrowser/Tor/PluggableTransports/conjure-client -registerURL https://registration.refraction.network/api
+
+#
+# Acept connect to tor from other machine
+#
+SocksListenAddress 0.0.0.0:9050
+
+#
+# Logs
+#
+Log notice stdout
+
+#
+# Used Bridges 
+#
+Bridge obfs4 57.128.57.81:62487 D92C6FBC4A6D0E963D574913F49BB1826CE0FA63 cert=rwSki456vBRGyJP6yaXYp8jhLkX4Z+jW2KYQz8GnYot7XF4W10nTBdp/hNM3T36u/WxkEw iat-mode=0
+Bridge obfs4 141.95.105.51:3950 77467CF9FA0089989F0FF53568A465A542A811E2 cert=R8N13sMkgjs11U+dBjX50a0dG9FglOKNGPh3VNcdVx5DGWI0rNIrv4hiTpMkRdkF96MscQ iat-mode=0
+
+
+
+# CookieAuthentication 1
+# DormantCanceledByStartup 1
+# AvoidDiskWrites 1
+# ClientOnionAuthDir /home/mike/Downloads/tor-browser/Browser/TorBrowser/Data/Tor/onion-auth
+# DataDirectory /home/mike/Downloads/tor-browser/Browser/TorBrowser/Data/Tor
+# GeoIPFile /home/mike/Downloads/tor-browser/Browser/TorBrowser/Data/Tor/geoip
+# GeoIPv6File /home/mike/Downloads/tor-browser/Browser/TorBrowser/Data/Tor/geoip6
