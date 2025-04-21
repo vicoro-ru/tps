@@ -9,9 +9,7 @@ services:
       - source: torconf
         target: /etc/tor/torrc
     healthcheck:
-    # Healtcheck web server -sx
-      test: ["CMD", "curl -sx --socks5 localhost:9050 'https://check.torproject.org/'", "|", \
-            "grep -qm1 Congratulations"]
+      test: ["CMD-SHELL", "curl -sx socks5h://localhost:9050 'https://check.torproject.org/'", "|", "grep -qm1 Congratulations"]
       start_period: 20s
       interval: 15s
       timeout: 7s
@@ -22,10 +20,10 @@ services:
       mode: replicated
       replicas: ${rcount}
     restart: always
-#    depends_on:
-#      tor:
-#        condition: service_healthy
-#        restart: true
+    depends_on:
+      tor:
+        condition: service_healthy
+        restart: true
   squid:
     build: ./squid
     restart: always
