@@ -3,6 +3,5 @@ LABEL maintainer="alisterosenheim@outlook.com"
 RUN apk --no-cache add tzdata \
                        privoxy
 RUN for file in /etc/privoxy/*.new; do mv "$file" "${file/.new/}"; done
-COPY config /etc/privoxy/config
 EXPOSE 8118
 CMD [ "privoxy", "--pidfile", "/run/privoxy.pid", "--user", "privoxy", "--no-daemon", "/etc/privoxy/config" ]

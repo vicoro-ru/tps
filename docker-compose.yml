@@ -2,26 +2,33 @@ services:
   tor:
     build: ./tor
     deploy:
-      replicas: "${BridgeNumber}"
+      mode: replicated
+      replicas: ${rcount}
     restart: always
     configs:
       - source: torconf
         target: /etc/tor/torrc
     healthcheck:
-      test: ["CMD", "curl --fail --socks5-hostname localhost:9050 -I -L 'https://torproject.org' || exit 1"]
-      interval: 30s
-      timeout: 10s
+    # Healtcheck web server -sx
+      test: ["CMD", "curl -sx --socks5 localhost:9050 'https://check.torproject.org/'", "|", \
+            "grep -qm1 Congratulations"]
+      start_period: 20s
+      interval: 15s
+      timeout: 7s
       retries: 3
   privoxy:
     build: ./privoxy
+    deploy:
+      mode: replicated
+      replicas: ${rcount}
     restart: always
 #    depends_on:
 #      tor:
 #        condition: service_healthy
 #        restart: true
-#  squid:
-#    build: ./squid
-#    restart: always
+  squid:
+    build: ./squid
+    restart: always
 #  bbulder:
 
 configs:
