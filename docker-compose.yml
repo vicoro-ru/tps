@@ -9,10 +9,14 @@ services:
       - source: torconf
         target: /etc/tor/torrc
     healthcheck:
-      test: ["CMD-SHELL", "curl -sx socks5h://localhost:9050 'https://check.torproject.org/'", "|", "grep -qm1 Congratulations"]
-      start_period: 20s
+      test: ["CMD-SHELL", "curl -fx socks5h://localhost:9050 'https://check.torproject.org/'", "||", "exit 1"]
+      # Когда совершить первую проверку
+      start_period: 60s
+      # Через сколько секунд повторить проверку
       interval: 15s
-      timeout: 7s
+      # Сколько времени даётся на саму проверку, или сбой
+      timeout: 3s
+      # Сколько попыток сделать
       retries: 3
   privoxy:
     build: ./privoxy
