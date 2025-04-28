@@ -31,6 +31,12 @@ services:
   squid:
     build: ./squid
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "squidclient localhost", "||", "exit 1"]
+      start_period: 6s
+      interval: 10s
+      timeout: 1s
+      retries: 3
 #  bbulder:
 
 configs:
